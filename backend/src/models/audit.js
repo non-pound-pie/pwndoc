@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');//.set('debug', true);
 const CVSS31 = require('../lib/cvsscalc31');
+const Ticket = require('./tickets');
 var Schema = mongoose.Schema;
 
 var Paragraph = {
@@ -32,7 +33,8 @@ var Finding = {
     category:               String,
     customFields:           [customField],
     retestStatus:           {type: String, enum: ['ok', 'ko', 'unknown', 'partial']},
-    retestDescription:      String
+    retestDescription:      String,
+    creator:                {type: Schema.Types.ObjectId, ref: 'User'}
 }
 
 var Service = {

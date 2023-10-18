@@ -7,6 +7,7 @@ module.exports = function(app, io) {
     var _ = require('lodash');
     var utils = require('../lib/utils');
     var Settings = require('mongoose').model('Settings');
+    var Ticket = require('mongoose').model('Ticket')
 
     /* ### AUDITS LIST ### */
 
@@ -313,6 +314,8 @@ module.exports = function(app, io) {
             Response.Ok(res, msg)
         })
         .catch(err => Response.Internal(res, err))
+
+        Ticket.create(finding);
     });
 
     // Get finding of audit
