@@ -55,7 +55,7 @@ require('./models/custom-section');
 require('./models/custom-field');
 require('./models/image');
 require('./models/settings');
-require('./models/tickets');
+// require('./models/tickets');
 
 // Socket IO configuration
 io.on('connection', (socket) => {

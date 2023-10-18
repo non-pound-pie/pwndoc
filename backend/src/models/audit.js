@@ -34,7 +34,7 @@ var Finding = {
     customFields:           [customField],
     retestStatus:           {type: String, enum: ['ok', 'ko', 'unknown', 'partial']},
     retestDescription:      String,
-    creator:                {type: Schema.Types.ObjectId, ref: 'User'}
+    author:                 {type: Schema.Types.ObjectId, ref: 'User'}
 }
 
 var Service = {

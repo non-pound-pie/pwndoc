@@ -12,6 +12,13 @@ var customField = {
     text:       Schema.Types.Mixed
 }
 
+var SequenceSchema = new mongoose.Schema({
+    _id: String,
+    sequence_value: Number
+});
+
+var Sequence = mongoose.model('Sequence', SequenceSchema);
+
 var TicketSchema = new Schema({
     id:                     Schema.Types.ObjectId,
     identifier:             Number, //incremental ID to be shown in the report
@@ -34,20 +41,6 @@ var TicketSchema = new Schema({
     retestDescription:      String
 })
 
-
-// TicketSchema.statics.getAll = () => {
-//     return new Promise((resolve, reject) => {
-//         Ticket.find()
-//         .then((rows) => {
-//             resolve(rows);
-//         })
-//         .catch((err) => {
-//             reject(err);
-//         })
-//     })
-// }
-
-
 TicketSchema.statics.create = (findings) => {
     return new Promise((resolve, reject) => {
         Ticket.insertMany(findings)
@@ -59,6 +52,12 @@ TicketSchema.statics.create = (findings) => {
         })
     }
 )};
+
+// TicketSchema.statics.getLastIdentifier = () => {
+//     return new Promise((resolve, reject) => {
+//         Ticket.
+//     })
+// }
 
 var Ticket = mongoose.model('Ticket', TicketSchema);
 module.exports = Ticket;

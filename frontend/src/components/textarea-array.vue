@@ -10,6 +10,7 @@
     :rules="rules"
     lazy-rules="ondemand"
     :readonly="readonly"
+    :needs_url_validate="needs_url_validate"
     >
     <template v-slot:label>
         {{label}} <span v-if="rules && rules[0] !== ''" class="text-red">*</span>
@@ -32,7 +33,11 @@ export default {
             type: Boolean,
             default: false
         },
-        rules: Array
+        rules: Array,
+        needs_url_validate: {
+            type: Boolean,
+            default: false
+        }
     },
 
     data: function() {
@@ -67,8 +72,20 @@ export default {
         validate: function() {
             this.$refs.textareaField.validate()
             this.hasError = this.$refs.textareaField.hasError
+        },
+
+        url_val: function(){
+            if (!this.needs_url_validate)
+                return true
+            let huy = this.dataString.split('\n')
+            for (let i in huy){
+                if (!huy[i].match(/^((https?|ftps?):\/\/)?(\w+\.)+\w+\/?$/)){
+                    return false
+                    }
+            }
+            return true
         }
-    }
+    },
 }
 
 </script>

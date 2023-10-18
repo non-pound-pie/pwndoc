@@ -32,7 +32,7 @@ const SettingSchema = new Schema({
                 scope: {type: Boolean, default: false},
                 findingType: {type: Boolean, default: false},
                 findingDescription: {type: Boolean, default: false},
-                findingObservation: {type: Boolean, default: false},
+                // findingObservation: {type: Boolean, default: false},
                 findingReferences: {type: Boolean, default: false},
                 findingProofs: {type: Boolean, default: false},
                 findingAffected: {type: Boolean, default: false},
