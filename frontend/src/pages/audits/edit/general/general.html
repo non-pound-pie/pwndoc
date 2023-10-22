@@ -115,7 +115,7 @@ buttons
                     v-model="audit.collaborators"
                     :options="collaborators"
                     option-value="username"
-                    :option-label="(item) => (item)? item.firstname+' '+item.lastname: 'undefined'"
+                    :option-label="(item) => (item)? item.username: 'undefined'"
                     multiple
                     use-chips
                     options-sanitize
@@ -129,7 +129,7 @@ buttons
                             text-color="white" 
                             dense
                             >
-                                {{audit.creator.firstname}} {{audit.creator.lastname}}
+                                {{audit.creator.username}}
                             </q-chip>
                         </template>
                         <template v-slot:selected-item="scope">
@@ -141,7 +141,7 @@ buttons
                             color="blue-grey-5"
                             text-color="white"
                             >
-                                {{scope.opt.firstname}} {{scope.opt.lastname}}
+                                {{scope.opt.username}}
                             </q-chip>
                         </template>
                     </q-select>

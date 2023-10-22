@@ -27,6 +27,7 @@ export default [
     {path: 'vulnerabilities', component: () => import('pages/vulnerabilities'), meta: {breadcrumb: 'Vulnerabilities'}},
     {path: 'profile', component: () => import('pages/profile')},
     {path: 'settings', component: () => import('pages/settings')},
+    {path: 'tickets', component: () => import('pages/tickets')},
     {path: '403', name: '403', component: () => import('pages/403')},
     {path: '404', name: '404', component: () => import('pages/404')}
   ]},

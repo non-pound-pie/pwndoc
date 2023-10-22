@@ -6,6 +6,7 @@ export default {
         audits: 'Audits',
         vulnerabilities: 'Vulnerabilities',
         data: 'Data',
+        tickets: 'Tickets',
     },
     btn: {
         cancel: 'Cancel',
@@ -355,6 +356,8 @@ export default {
     urgent: 'Urgent',
     title: 'Title',
     category: 'Category',
+    project: 'Project',
+    author: 'Author',
     selectCategory: 'Select category',
     noCategory: 'No Category',
     vulnType: 'Type',

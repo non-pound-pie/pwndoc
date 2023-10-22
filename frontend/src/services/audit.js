@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import tickets from '../pages/tickets/tickets';
 
 export default {
   getAudits: function(filters) {
@@ -46,6 +47,18 @@ export default {
   
   getFinding: function(auditId, findingId) {
     return Vue.prototype.$axios.get(`audits/${auditId}/findings/${findingId}`)
+  },
+
+  getPentesters: function() {
+    return Vue.prototype.$axios.get(`tickets/pentesters`)
+  },
+
+  getFindingsTitle: function() {
+    return Vue.prototype.$axios.get(`tickets/titles`)
+  },
+
+  getAllFindings: function() {
+    return Vue.prototype.$axios.get(`tickets`)
   },
 
   updateFinding: function(auditId, findingId, finding) {

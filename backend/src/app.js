@@ -55,7 +55,6 @@ require('./models/custom-section');
 require('./models/custom-field');
 require('./models/image');
 require('./models/settings');
-// require('./models/tickets');
 
 // Socket IO configuration
 io.on('connection', (socket) => {
@@ -125,7 +124,7 @@ require('./routes/client')(app);
 require('./routes/company')(app);
 require('./routes/vulnerability')(app);
 require('./routes/template')(app);
-require('./routes/vulnerability')(app);
+// require('./routes/tickets')(app);
 require('./routes/data')(app);
 require('./routes/image')(app);
 require('./routes/settings')(app);

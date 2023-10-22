@@ -23,6 +23,7 @@ export default {
         return {
             finding: {},
             findingOrig: {},
+            collaborators: [],
             selectedTab: "definition",
             proofsTabVisited: false,
             detailsTabVisited: false,

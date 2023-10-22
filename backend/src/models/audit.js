@@ -33,8 +33,7 @@ var Finding = {
     category:               String,
     customFields:           [customField],
     retestStatus:           {type: String, enum: ['ok', 'ko', 'unknown', 'partial']},
-    retestDescription:      String,
-    author:                 {type: Schema.Types.ObjectId, ref: 'User'}
+    retestDescription:      String
 }
 
 var Service = {
@@ -599,6 +598,68 @@ AuditSchema.statics.getFinding = (isAdmin, auditId, userId, findingId) => {
                 throw({fn: 'NotFound', message: 'Finding not found'})
             else 
                 resolve(finding)
+        })
+        .catch((err) => {
+            reject(err)
+        })
+    })
+}
+
+// Get all findings
+AuditSchema.statics.getAllFindings= () => {
+    return new Promise((resolve, reject) => {
+      Audit.find({}, { name: 1, findings: 1, _id: 0 })
+        .exec()
+        .then((audits) => {
+          const transformedFindings = audits.reduce((acc, audit) => {
+            if (audit.findings && audit.findings.length > 0) {
+              audit.findings.forEach((finding) => {
+                if (finding.customFields && finding.customFields.length > 0) {
+                  const pentester = finding.customFields.find(
+                    (field) => field.customField.label === "Pentester"
+                  );
+                  if (pentester) {
+                    acc.push({
+                      title: finding.title,
+                      name: audit.name,
+                      Pentester: pentester.text,
+                    });
+                  }
+                }
+              });
+            }
+            return acc;
+          }, []);
+          resolve(transformedFindings);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  };
+  
+
+AuditSchema.statics.getPentesters = () => {
+    return new Promise((resolve, reject) => {
+        var query = Audit.aggregate([{ $unwind: "$findings" }, { $unwind: "$findings.customFields" }, { $group: { _id: null, text: { $push: "$findings.customFields.text" } } }, { $project: { _id: 0, text: 1 } }])
+        query.exec()
+        .then((rows) => {
+            const uniqueText = Array.from(new Set(rows[0].text));
+            resolve(uniqueText);
+        })
+        .catch((err) => {
+            reject(err)
+        })
+    })
+}
+
+
+AuditSchema.statics.getFindingsTitle = () => {
+    return new Promise((resolve, reject) => {
+        var query = Audit.aggregate([{ $unwind: "$findings" }, { $group: { _id: null, titles: { $push: "$findings.title" } } }, { $project: { _id: 0, titles: 1 } }])
+        query.exec()
+        .then((rows) => {
+            resolve(rows)
         })
         .catch((err) => {
             reject(err)

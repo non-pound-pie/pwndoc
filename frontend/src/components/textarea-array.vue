@@ -79,7 +79,7 @@ export default {
                 return true
             let huy = this.dataString.split('\n')
             for (let i in huy){
-                if (!huy[i].match(/^((https?|ftps?):\/\/)?(\w+\.)+\w+\/?$/)){
+                if (huy[i] !== '' && !huy[i].match(/^((https?|ftps?):\/\/)?([\wА-я-]+\.)*[\wА-я-]+\/?$/)){
                     return false
                     }
             }

@@ -1,0 +1,65 @@
+<div>
+    <div class="row">
+        <div v-if="languages.length === 0" class="col-md-4 offset-md-4 q-mt-md">
+            <p>{{$t('noLanguage')}}<a href="/data/custom">{{$t('nav.data')}} -> {{$t('customData')}} -> {{$t('language')}}</a></p>
+        </div>
+        <div v-if="auditTypes.length === 0" class="col-md-4 offset-md-4 q-mt-md">
+            <p>{{$t('noAudit')}}<a href="/data/custom">{{$t('nav.data')}} -> {{$t('customData')}} -> {{$t('auditTypes')}}</a></p>
+        </div>
+        <div v-if="languages.length > 0 && auditTypes.length > 0" class="col-md-10 col-12 offset-md-1 q-mt-md">
+            <q-table
+                class="sticky-header-table"
+                :columns="dtHeaders"
+                :visible-columns="visibleColumns"
+                :data="findings"
+                :pagination.sync="pagination"
+                row-key="_id"
+                separator="none"
+                :loading="loading"
+                @row-dblclick="dblClick"
+            >  
+                <template v-slot:top-row="props">
+                    <q-tr>
+                        <q-td
+                        v-for="col in props.cols"
+                        :key="col.name"
+                        style="width:17%"
+                        >
+                        <div v-if="['name', 'title', 'Pentester'].indexOf(col.name) > -1">
+                            <q-input 
+                            dense
+                            :label="$t('search')"
+                            v-model="search[col.name]"
+                            clearable
+                            :autofocus="col.name === 'name'"
+                            outlined
+                            />
+                        </div>
+                        </q-td>
+                    </q-tr>
+                </template>
+    
+                <template v-slot:bottom="scope">
+                    <span v-if="findings.length === 1">1 {{$t('ticket')}}</span>                
+                    <span v-else>{{findings.length}} {{$t('tickets')}}</span> 
+                    <q-space />
+                    <span>{{$t('resultsPerPage')}}</span>
+                    <q-select
+                    class="q-px-md"
+                    v-model="pagination.rowsPerPage"
+                    :options="rowsPerPageOptions"
+                    emit-value
+                    map-options
+                    dense
+                    options-dense
+                    options-cover
+                    borderless
+                    />
+                    <span>{{pentesters}}</span>
+                    <q-pagination input v-model="pagination.page" :max="scope.pagesNumber" />            
+                </template>
+            </q-table>
+        </div>
+    </div>
+</div>
+    

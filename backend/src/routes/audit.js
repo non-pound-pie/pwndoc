@@ -325,6 +325,36 @@ module.exports = function(app, io) {
         .catch(err => Response.Internal(res, err))
     });
 
+    app.get("/api/tickets", (req, res) => {
+        Audit.getAllFindings(true, null)
+        .then(msg => {
+            io.to(req.params.auditId).emit('updateAudit');
+            Response.Ok(res, msg)
+        })
+        .catch(err => Response.Internal(res, err))
+    });
+
+
+    app.get("/api/tickets/pentesters", (req, res) => {
+        Audit.getPentesters()
+        .then(msg => {
+            io.to(req.params.auditId).emit('updateAudit');
+            Response.Ok(res, msg)
+        })
+        .catch(err => Response.Internal(res, err))
+    });
+
+    app.get("/api/tickets/titles", (req, res) => {
+        Audit.getFindingsTitle()
+        .then(msg => {
+            io.to(req.params.auditId).emit('updateAudit');
+            Response.Ok(res, msg)
+        })
+        .catch(err => Response.Internal(res, err))
+    });
+
+
+
     // Update finding of audit
     app.put("/api/audits/:auditId/findings/:findingId", acl.hasPermission('audits:update'), async function(req, res) {
         var settings = await Settings.getAll();
