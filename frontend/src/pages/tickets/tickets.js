@@ -76,7 +76,6 @@ export default {
         this.getAuditTypes();
         this.getCompanies();
         this.getFindings();
-        this.getPentesters();
 
     },
 
@@ -124,19 +123,6 @@ export default {
             .then((data) => {
                 this.findings = data.data.datas
                 this.loading = false
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-        },
-
-        getPentesters: function() {
-            this.loading = true
-            AuditService.getPentesters()
-            .then((data) => {
-                this.pentesters = data.data.datas
-                this.loading = false
-                console.log(this.pentesters)
             })
             .catch((err) => {
                 console.log(err)
@@ -214,8 +200,6 @@ export default {
         created: function() {
             // Вызываем метод getFindings при создании экземпляра Vue
             this.getFindings();
-            this.getPentesters();
-            // this.getFindingsTitle()
           }
     }
 }

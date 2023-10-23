@@ -412,6 +412,10 @@ export default {
                 this.$refs.typeField.validate()
                 hasErrors = hasErrors || this.$refs.typeField.hasError
             }
+            if (this.$refs.pentesterField) {
+                this.$refs.pentesterField.validate()
+                hasErrors = hasErrors || this.$refs.pentesterField.hasError
+            }
             if (this.$refs.descriptionField) {
                 this.$refs.descriptionField.validate()
                 hasErrors = hasErrors || this.$refs.descriptionField.hasError

@@ -33,7 +33,8 @@ var Finding = {
     category:               String,
     customFields:           [customField],
     retestStatus:           {type: String, enum: ['ok', 'ko', 'unknown', 'partial']},
-    retestDescription:      String
+    retestDescription:      String,
+    pentester:              String
 }
 
 var Service = {
@@ -614,18 +615,11 @@ AuditSchema.statics.getAllFindings= () => {
           const transformedFindings = audits.reduce((acc, audit) => {
             if (audit.findings && audit.findings.length > 0) {
               audit.findings.forEach((finding) => {
-                if (finding.customFields && finding.customFields.length > 0) {
-                  const pentester = finding.customFields.find(
-                    (field) => field.customField.label === "Pentester"
-                  );
-                  if (pentester) {
                     acc.push({
                       title: finding.title,
                       name: audit.name,
-                      Pentester: pentester.text,
+                      Pentester: finding.pentester,
                     });
-                  }
-                }
               });
             }
             return acc;

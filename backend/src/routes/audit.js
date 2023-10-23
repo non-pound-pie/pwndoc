@@ -288,6 +288,7 @@ module.exports = function(app, io) {
         var finding = {};
         // Required parameters
         finding.title = req.body.title;
+        finding.pentester = req.body.pentester;
         
         // Optional parameters
         if (req.body.vulnType) finding.vulnType = req.body.vulnType;
@@ -334,16 +335,6 @@ module.exports = function(app, io) {
         .catch(err => Response.Internal(res, err))
     });
 
-
-    app.get("/api/tickets/pentesters", (req, res) => {
-        Audit.getPentesters()
-        .then(msg => {
-            io.to(req.params.auditId).emit('updateAudit');
-            Response.Ok(res, msg)
-        })
-        .catch(err => Response.Internal(res, err))
-    });
-
     app.get("/api/tickets/titles", (req, res) => {
         Audit.getFindingsTitle()
         .then(msg => {
@@ -367,6 +358,7 @@ module.exports = function(app, io) {
         var finding = {};
         // Optional parameters
         if (req.body.title) finding.title = req.body.title;
+        if (req.body.pentester) finding.pentester = req.body.pentester;
         if (req.body.vulnType) finding.vulnType = req.body.vulnType;
         if (!_.isNil(req.body.description)) finding.description = req.body.description;
         if (!_.isNil(req.body.observation)) finding.observation = req.body.observation;

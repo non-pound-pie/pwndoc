@@ -80,6 +80,18 @@
                                 {{$t('type')}} <span v-if="$settings.report.public.requiredFields.findingType" class="text-red">*</span>
                             </template>
                         </q-select>
+                    <template>
+                        <q-input
+                        ref="pentesterField"
+                        class="col-md-4 col-12" 
+                        label="Pentester"
+                        label-slot
+                        stack-label v-model="finding.pentester"
+                        outlined
+                        :rules="[val => !!val || $t('fieldIsRequired')]"
+                        :readonly="frontEndAuditState !== AUDIT_VIEW_STATE.EDIT"
+                        >
+                    </template>
                         <q-field
                         ref="descriptionField"
                         class="col-md-12 basic-editor q-pt-none"
