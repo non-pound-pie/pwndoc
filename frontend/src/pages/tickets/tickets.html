@@ -11,6 +11,8 @@
                 class="sticky-header-table"
                 :columns="dtHeaders"
                 :visible-columns="visibleColumns"
+                :filter="search"
+                :filter-method="customFilter"
                 :data="findings"
                 :pagination.sync="pagination"
                 row-key="_id"
@@ -55,7 +57,6 @@
                     options-cover
                     borderless
                     />
-                    <span>{{pentesters}}</span>
                     <q-pagination input v-model="pagination.page" :max="scope.pagesNumber" />            
                 </template>
             </q-table>

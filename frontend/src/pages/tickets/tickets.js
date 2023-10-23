@@ -28,8 +28,8 @@ export default {
             languages: [],
             // Datatable headers
             dtHeaders: [
-                {name: 'title', label: $t('title'), field: row => row.title, align: 'left', sortable: true},
                 {name: 'name', label: $t('name'), field: row => row.name, align: 'left', sortable: true},
+                {name: 'title', label: $t('title'), field: row => row.title, align: 'left', sortable: true},
                 {name: 'Pentester', label: $t('Pentester'), field: row => row.Pentester, align: 'left', sortable: true},
             ],
             visibleColumns: ['name', 'title', 'Pentester'],
@@ -142,6 +142,26 @@ export default {
                 console.log(err)
             })
         },
+
+        customFilter: function(rows, terms) {
+            var result = rows && rows.filter(row => {
+                for (const [key, value] of Object.entries(terms)) { // for each search term
+                  var searchString = (_.get(row, key) || "")
+                  if (typeof searchString === "string")
+                    searchString = searchString.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+                  var termString = (value || "")
+                  if (typeof termString === "string")
+                    termString = termString.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+                  if (typeof searchString !== "string" || typeof termString !== "string")
+                    return searchString === termString
+                  if (searchString.indexOf(termString) < 0) {
+                    return false
+                  }
+                }
+                return true
+            })
+            return result
+          },
 
         // Convert blob to text
         BlobReader: function(data) {
