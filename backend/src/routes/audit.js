@@ -326,23 +326,22 @@ module.exports = function(app, io) {
         .catch(err => Response.Internal(res, err))
     });
 
-    app.get("/api/tickets", (req, res) => {
-        Audit.getAllFindings(true, null)
+    app.get("/api/tickets", acl.hasPermission('audits:read'), function(req, res) {
+        Audit.getAllFindings(acl.isAllowed(req.decodedToken.role, 'audits:read-all'), req.decodedToken.id)
         .then(msg => {
-            io.to(req.params.auditId).emit('updateAudit');
             Response.Ok(res, msg)
         })
         .catch(err => Response.Internal(res, err))
     });
 
-    app.get("/api/tickets/titles", (req, res) => {
-        Audit.getFindingsTitle()
-        .then(msg => {
-            io.to(req.params.auditId).emit('updateAudit');
-            Response.Ok(res, msg)
-        })
-        .catch(err => Response.Internal(res, err))
-    });
+    // app.get("/api/tickets/titles", (req, res) => {
+    //     Audit.getFindingsTitle()
+    //     .then(msg => {
+    //         io.to(req.params.auditId).emit('updateAudit');
+    //         Response.Ok(res, msg)
+    //     })
+    //     .catch(err => Response.Internal(res, err))
+    // });
 
 
 

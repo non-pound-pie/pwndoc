@@ -607,10 +607,12 @@ AuditSchema.statics.getFinding = (isAdmin, auditId, userId, findingId) => {
 }
 
 // Get all findings
-AuditSchema.statics.getAllFindings= () => {
+AuditSchema.statics.getAllFindings = (isAdmin, userId) => {
     return new Promise((resolve, reject) => {
-      Audit.find({}, { name: 1, findings: 1, _id: 0 })
-        .exec()
+    var query = Audit.find({}, { name: 1, findings: 1, _id: 0 })
+    if (!isAdmin)
+    query.or([{creator: userId}, {collaborators: userId}, {reviewers: userId}])
+        query.exec()
         .then((audits) => {
           const transformedFindings = audits.reduce((acc, audit) => {
             if (audit.findings && audit.findings.length > 0) {
@@ -619,6 +621,9 @@ AuditSchema.statics.getAllFindings= () => {
                       title: finding.title,
                       name: audit.name,
                       Pentester: finding.pentester,
+                      creator: audit.creator,
+                      collaborators: audit.collaborators,
+                      reviewers: audit.reviewers,
                     });
               });
             }
