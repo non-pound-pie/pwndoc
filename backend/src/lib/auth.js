@@ -31,7 +31,7 @@ exports.jwtRefreshSecret = jwtRefreshSecret
 */
 
 var builtInRoles = {
-    user: {
+    pentester: {
         allows: [
             // Audits
             'audits:create',

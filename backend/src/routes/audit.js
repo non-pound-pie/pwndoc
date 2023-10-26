@@ -302,8 +302,9 @@ module.exports = function(app, io) {
         if (req.body.poc) finding.poc = req.body.poc;
         if (req.body.scope) finding.scope = req.body.scope;
         if (req.body.status !== undefined) finding.status = req.body.status;
-        if (req.body.category) finding.category = req.body.category
-        if (req.body.customFields) finding.customFields = req.body.customFields
+        if (req.body.category) finding.category = req.body.category;
+        if (req.body.customFields) finding.customFields = req.body.customFields;
+        if (req.decodedToken.id) finding.creator = req.decodedToken.id;
 
         if (settings.reviews.enabled && settings.reviews.private.removeApprovalsUponUpdate) {
             Audit.updateGeneral(acl.isAllowed(req.decodedToken.role, 'audits:update-all'), req.params.auditId, req.decodedToken.id, { approvals: [] });
@@ -373,6 +374,7 @@ module.exports = function(app, io) {
         if (req.body.customFields) finding.customFields = req.body.customFields
         if (req.body.retestDescription) finding.retestDescription = req.body.retestDescription
         if (req.body.retestStatus) finding.retestStatus = req.body.retestStatus
+        if (req.body.retestStatus) finding.retestStatus = req.body.retestStatus
 
         if (settings.reviews.enabled && settings.reviews.private.removeApprovalsUponUpdate) {
             Audit.updateGeneral(acl.isAllowed(req.decodedToken.role, 'audits:update-all'), req.params.auditId, req.decodedToken.id, { approvals: [] });
@@ -387,7 +389,7 @@ module.exports = function(app, io) {
     });
 
     // Delete finding of audit
-    app.delete("/api/audits/:auditId/findings/:findingId", acl.hasPermission('audits:update'), async function(req, res) {
+    app.delete("/api/audits/:auditId/findings/:findingId", acl.hasPermission('audits:update-finding'), async function(req, res) {
         var settings = await Settings.getAll();
         var audit = await Audit.getAudit(acl.isAllowed(req.decodedToken.role, 'audits:read-all'), req.params.auditId, req.decodedToken.id);
         if (settings.reviews.enabled && audit.state !== "EDIT") {

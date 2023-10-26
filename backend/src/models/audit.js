@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');//.set('debug', true);
 const CVSS31 = require('../lib/cvsscalc31');
-const Ticket = require('./tickets');
 var Schema = mongoose.Schema;
 
 var Paragraph = {
@@ -34,7 +33,8 @@ var Finding = {
     customFields:           [customField],
     retestStatus:           {type: String, enum: ['ok', 'ko', 'unknown', 'partial']},
     retestDescription:      String,
-    pentester:              String
+    pentester:              String,
+    creator:                {type: Schema.Types.ObjectId, ref: 'User'}
 }
 
 var Service = {
@@ -604,7 +604,7 @@ AuditSchema.statics.getFinding = (isAdmin, auditId, userId, findingId) => {
             reject(err)
         })
     })
-}
+};
 
 // Get all findings
 AuditSchema.statics.getAllFindings = (isAdmin, userId) => {

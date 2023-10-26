@@ -1,8 +1,17 @@
 {
-    "report": {
-        "inherits": ["user"],
-        "allows": [
-            "audits:read-all"
+    "extranet": {
+        "allows":[
+            "audits:read",
+            "audits:read-findings",
+            "audits:update-finding",
+            "vulnerabilities:read",
+            "languages:read",
+            "audit-types:read",
+            "sections:read",
+            "custom-fields:read",
+            "vulnerability-categories:read",
+            "vulnerability-types:read",
+            "settings:read-public"
         ]
     }
 }
