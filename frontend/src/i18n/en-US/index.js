@@ -4,7 +4,7 @@ export default {
     changeDisplayLanguageInfo: 'Choose your preferred default language',
     nav: {
         audits: 'Audits',
-        vulnerabilities: 'Vulnerabilities',
+        vulnerabilities: 'Knowledge base',
         data: 'Data',
         tickets: 'Tickets',
     },

@@ -335,17 +335,6 @@ module.exports = function(app, io) {
         .catch(err => Response.Internal(res, err))
     });
 
-    // app.get("/api/tickets/titles", (req, res) => {
-    //     Audit.getFindingsTitle()
-    //     .then(msg => {
-    //         io.to(req.params.auditId).emit('updateAudit');
-    //         Response.Ok(res, msg)
-    //     })
-    //     .catch(err => Response.Internal(res, err))
-    // });
-
-
-
     // Update finding of audit
     app.put("/api/audits/:auditId/findings/:findingId", acl.hasPermission('audits:update'), async function(req, res) {
         var settings = await Settings.getAll();
@@ -389,7 +378,7 @@ module.exports = function(app, io) {
     });
 
     // Delete finding of audit
-    app.delete("/api/audits/:auditId/findings/:findingId", acl.hasPermission('audits:update-finding'), async function(req, res) {
+    app.delete("/api/audits/:auditId/findings/:findingId", acl.hasPermission('audits:update'), async function(req, res) {
         var settings = await Settings.getAll();
         var audit = await Audit.getAudit(acl.isAllowed(req.decodedToken.role, 'audits:read-all'), req.params.auditId, req.decodedToken.id);
         if (settings.reviews.enabled && audit.state !== "EDIT") {

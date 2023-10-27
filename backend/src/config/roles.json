@@ -2,8 +2,7 @@
     "extranet": {
         "allows":[
             "audits:read",
-            "audits:read-findings",
-            "audits:update-finding",
+            "audits:update",
             "vulnerabilities:read",
             "languages:read",
             "audit-types:read",

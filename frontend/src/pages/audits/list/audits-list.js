@@ -27,8 +27,8 @@ export default {
             // Datatable headers
             dtHeaders: [
                 {name: 'name', label: $t('name'), field: 'name', align: 'left', sortable: true},
-                {name: 'auditType', label: $t('auditType'), field: 'auditType', align: 'left', sortable: true},
-                {name: 'language', label: $t('language'), field: 'language', align: 'left', sortable: true},
+                // {name: 'auditType', label: $t('auditType'), field: 'auditType', align: 'left', sortable: true},
+                // {name: 'language', label: $t('language'), field: 'language', align: 'left', sortable: true},
                 {name: 'company', label: $t('company'), field: row => (row.company)?row.company.name:'', align: 'left', sortable: true},
                 {name: 'users', label: $t('participants'), align: 'left', sortable: true},
                 {name: 'date', label: $t('date'), field: row => row.createdAt.split('T')[0], align: 'left', sortable: true},

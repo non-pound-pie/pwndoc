@@ -81,14 +81,13 @@
 							</q-btn>
 						</q-item-section>
 					</q-item>
-
-					<q-item :to='"/audits/"+auditId+"/general"'>
+					<q-item :to='"/audits/"+auditId+"/general"' v-if="isAdmin">
 						<q-item-section avatar>
 							<q-icon name="fa fa-cog"></q-icon>
 						</q-item-section>
 						<q-item-section>{{$t('generalInformation')}}</q-item-section>
 					</q-item>
-					
+
 					<div class="row">
 						<div v-for="(user,idx) in generalUsers" :key="idx" class="col multi-colors-bar" :style="{background:user.color}" />
 					</div>
@@ -408,7 +407,8 @@ export default {
 		},
 
 		computed: {
-			generalUsers: function() {return this.users.filter(user => user.menu === 'general')},
+			isAdmin: function() {return UserService.user.role === 'admin';},
+ 			generalUsers: function() {return this.users.filter(user => user.menu === 'general')},
 			networkUsers: function() {return this.users.filter(user => user.menu === 'network')},
 			findingUsers: function() {return this.users.filter(user => user.menu === 'editFinding')},
 			sectionUsers: function() {return this.users.filter(user => user.menu === 'editSection')},

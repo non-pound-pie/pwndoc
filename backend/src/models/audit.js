@@ -621,9 +621,8 @@ AuditSchema.statics.getAllFindings = (isAdmin, userId) => {
                       title: finding.title,
                       name: audit.name,
                       Pentester: finding.pentester,
-                      creator: audit.creator,
-                      collaborators: audit.collaborators,
-                      reviewers: audit.reviewers,
+                      cvssv3: finding.cvssv3,
+                      address: finding.references
                     });
               });
             }

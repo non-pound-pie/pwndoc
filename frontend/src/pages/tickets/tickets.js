@@ -2,10 +2,9 @@ import { Dialog, Notify, QSpinnerGears } from 'quasar';
 
 import AuditStateIcon from 'components/audit-state-icon'
 import Breadcrumb from 'components/breadcrumb'
-
+import CvssCalculator from 'components/cvsscalculator'
 import AuditService from '@/services/audit'
 import DataService from '@/services/data'
-import CompanyService from '@/services/company'
 import UserService from '@/services/user'
 
 import { $t } from '@/boot/i18n'
@@ -14,7 +13,7 @@ export default {
     data: () => {
         return {
             UserService: UserService,
-            // Audits list
+            // Audits, pentesters, findings lists
             audits: [],
             pentesters: [],
             findings: [],
@@ -22,8 +21,6 @@ export default {
             loading: true,
             // AuditTypes list
             auditTypes: [],
-            // Companies list
-            companies: [],
             // Languages availbable
             languages: [],
             // Datatable headers
@@ -31,8 +28,11 @@ export default {
                 {name: 'name', label: $t('name'), field: row => row.name, align: 'left', sortable: true},
                 {name: 'title', label: $t('title'), field: row => row.title, align: 'left', sortable: true},
                 {name: 'Pentester', label: $t('Pentester'), field: row => row.Pentester, align: 'left', sortable: true},
+                {name: 'cvssv3', label: $t('cvssv3'), field: row => CVSS31.calculateCVSSFromVector(row.cvssv3).baseSeverity, align: 'left', sortable: true},
+                {name: 'address', label: $t('address'), field: row => row.address.join(', '), align: 'left', sortable: true},
+
             ],
-            visibleColumns: ['name', 'title', 'Pentester'],
+            visibleColumns: ['name', 'title', 'Pentester', 'cvssv3', 'address'],
             // Datatable pagination
             pagination: {
                 page: 1,
@@ -48,33 +48,22 @@ export default {
             ],
             // Search filter
             search: {name: '', title: '', Pentester: ''},
-            myAudits: false,
-            displayConnected: false,
-            displayReadyForReview: false,
             // Errors messages
             errors: {name: '', language: '', auditType: ''},
-            // Selected or New Audit
-            currentAudit: {name: '', language: '', auditType: '', type: 'default'}
         }
     },
 
     components: {
         AuditStateIcon,
-        Breadcrumb
+        Breadcrumb,
+        CvssCalculator
     },
 
     mounted: function() {
         this.search.Pentester = this.$route.params.Pentester;
 
-        if (this.UserService.isAllowed('audits:users-connected'))
-            this.visibleColumns.push('connected')
-        if (this.$settings.reviews.enabled)
-            this.visibleColumns.push('reviews')
-
-        // this.getAudits();
         this.getLanguages();
         this.getAuditTypes();
-        this.getCompanies();
         this.getFindings();
 
     },
@@ -100,17 +89,6 @@ export default {
             DataService.getAuditTypes()
             .then((data) => {
                 this.auditTypes = data.data.datas
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-        },
-
-         // Get Companies list
-         getCompanies: function() {
-            CompanyService.getCompanies()
-            .then((data) => {
-                this.companies = data.data.datas;
             })
             .catch((err) => {
                 console.log(err)
@@ -148,54 +126,6 @@ export default {
             })
             return result
           },
-
-        // Convert blob to text
-        BlobReader: function(data) {
-            const fileReader = new FileReader();
-
-            return new Promise((resolve, reject) => {
-                fileReader.onerror = () => {
-                    fileReader.abort()
-                    reject(new Error('Problem parsing blob'));
-                }
-
-                fileReader.onload = () => {
-                    resolve(fileReader.result)
-                }
-
-                fileReader.readAsText(data)
-            })
-        },
-
-
-        cleanErrors: function() {
-            this.errors.name = '';
-            this.errors.language = '';
-            this.errors.auditType = '';
-        },
-
-        cleanCurrentAudit: function() {
-            this.cleanErrors();
-            this.currentAudit.name = '';
-            this.currentAudit.language = '';
-            this.currentAudit.auditType = '';
-            this.currentAudit.type = 'default';
-        },
-
-        // Convert language locale of audit for table display
-        convertLocale: function(locale) {
-            for (var i=0; i<this.languages.length; i++)
-                if (this.languages[i].locale === locale)
-                    return this.languages[i].language;
-            return ""
-        },
-
-        convertParticipants: function(row) {
-            var collabs = (row.collaborators)? row.collaborators: [];
-            var result = (row.creator)? [row.creator.username]: [];
-            collabs.forEach(collab => result.push(collab.username));
-            return result.join(', '); 
-        },
 
         created: function() {
             // Вызываем метод getFindings при создании экземпляра Vue
